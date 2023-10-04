@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+
+</head>
+<body>
+    <ul id="messages"></ul>
+    <input id="input" autocomplete="off"/> <button onclick="sendMessage()">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const socket = io();
+
+        function sendMessage(){
+            const message = $('#input').val();
+            if(message.trim()!== ''){
+                socket.emit('chat message', message);
+                $('#input').val('');
+            }
+        }
+
+        socket.on('chat message', (message)=>{
+             $('#messages').append($('<li>').text(message));
+        });
+    </script>
+</body>
+</html>
